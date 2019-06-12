@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="icodesoft">
 <meta property="og:description" content="OS配置Docker安装安装curl并添加KEY安装 kubelet kubeadm kubectl修改docker的Cgroup Driver初始化master节点安装网络插件Canal安装Dashboard修改type并添加端口号生成安全证书下载Dashboard.yaml并重新生成创建 serviceaccount dashboard获取登录K8S时所用token验证登录Kubernetes">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-11T08:50:32.232Z">
+<meta property="og:updated_time" content="2019-06-12T01:18:37.976Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kubernetes系列~master节点安装">
 <meta name="twitter:description" content="OS配置Docker安装安装curl并添加KEY安装 kubelet kubeadm kubectl修改docker的Cgroup Driver初始化master节点安装网络插件Canal安装Dashboard修改type并添加端口号生成安全证书下载Dashboard.yaml并重新生成创建 serviceaccount dashboard获取登录K8S时所用token验证登录Kubernetes">
@@ -52,6 +52,12 @@
 		<hgroup>
 		  <h1 class="header-author"><a href="/">Gary Gao</a></h1>
 		</hgroup>
+
+<!--这一段是不蒜子的访问量统计代码-->
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次 &nbsp;   </span>
+<span id="busuanzi_container_site_uv">访客数<span id="busuanzi_value_site_uv"></span>人次</span>
+
 		
 
 		<nav class="header-menu">
@@ -91,7 +97,7 @@
 		        
 			</div>
 		</nav>
-	</header>		
+	</header>
 </div>
 
     </div>
@@ -174,7 +180,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="OS配置"><a href="#OS配置" class="headerlink" title="OS配置"></a>OS配置</h1><h1 id="Docker安装"><a href="#Docker安装" class="headerlink" title="Docker安装"></a>Docker安装</h1><h1 id="安装curl并添加KEY"><a href="#安装curl并添加KEY" class="headerlink" title="安装curl并添加KEY"></a>安装curl并添加KEY</h1><h1 id="安装-kubelet-kubeadm-kubectl"><a href="#安装-kubelet-kubeadm-kubectl" class="headerlink" title="安装 kubelet kubeadm kubectl"></a>安装 kubelet kubeadm kubectl</h1><h1 id="修改docker的Cgroup-Driver"><a href="#修改docker的Cgroup-Driver" class="headerlink" title="修改docker的Cgroup Driver"></a>修改docker的Cgroup Driver</h1><h1 id="初始化master节点"><a href="#初始化master节点" class="headerlink" title="初始化master节点"></a>初始化master节点</h1><h2 id="安装网络插件Canal"><a href="#安装网络插件Canal" class="headerlink" title="安装网络插件Canal"></a>安装网络插件Canal</h2><h1 id="安装Dashboard"><a href="#安装Dashboard" class="headerlink" title="安装Dashboard"></a>安装Dashboard</h1><h2 id="修改type并添加端口号"><a href="#修改type并添加端口号" class="headerlink" title="修改type并添加端口号"></a>修改type并添加端口号</h2><h2 id="生成安全证书"><a href="#生成安全证书" class="headerlink" title="生成安全证书"></a>生成安全证书</h2><h2 id="下载Dashboard-yaml并重新生成"><a href="#下载Dashboard-yaml并重新生成" class="headerlink" title="下载Dashboard.yaml并重新生成"></a>下载Dashboard.yaml并重新生成</h2><h1 id="创建-serviceaccount-dashboard"><a href="#创建-serviceaccount-dashboard" class="headerlink" title="创建 serviceaccount dashboard"></a>创建 serviceaccount dashboard</h1><h1 id="获取登录K8S时所用token"><a href="#获取登录K8S时所用token" class="headerlink" title="获取登录K8S时所用token"></a>获取登录K8S时所用token</h1><h1 id="验证登录Kubernetes"><a href="#验证登录Kubernetes" class="headerlink" title="验证登录Kubernetes"></a>验证登录Kubernetes</h1>
+        <h2 id="OS配置"><a href="#OS配置" class="headerlink" title="OS配置"></a>OS配置</h2><h2 id="Docker安装"><a href="#Docker安装" class="headerlink" title="Docker安装"></a>Docker安装</h2><h2 id="安装curl并添加KEY"><a href="#安装curl并添加KEY" class="headerlink" title="安装curl并添加KEY"></a>安装curl并添加KEY</h2><h2 id="安装-kubelet-kubeadm-kubectl"><a href="#安装-kubelet-kubeadm-kubectl" class="headerlink" title="安装 kubelet kubeadm kubectl"></a>安装 kubelet kubeadm kubectl</h2><h2 id="修改docker的Cgroup-Driver"><a href="#修改docker的Cgroup-Driver" class="headerlink" title="修改docker的Cgroup Driver"></a>修改docker的Cgroup Driver</h2><h2 id="初始化master节点"><a href="#初始化master节点" class="headerlink" title="初始化master节点"></a>初始化master节点</h2><h3 id="安装网络插件Canal"><a href="#安装网络插件Canal" class="headerlink" title="安装网络插件Canal"></a>安装网络插件Canal</h3><h2 id="安装Dashboard"><a href="#安装Dashboard" class="headerlink" title="安装Dashboard"></a>安装Dashboard</h2><h3 id="修改type并添加端口号"><a href="#修改type并添加端口号" class="headerlink" title="修改type并添加端口号"></a>修改type并添加端口号</h3><h3 id="生成安全证书"><a href="#生成安全证书" class="headerlink" title="生成安全证书"></a>生成安全证书</h3><h3 id="下载Dashboard-yaml并重新生成"><a href="#下载Dashboard-yaml并重新生成" class="headerlink" title="下载Dashboard.yaml并重新生成"></a>下载Dashboard.yaml并重新生成</h3><h2 id="创建-serviceaccount-dashboard"><a href="#创建-serviceaccount-dashboard" class="headerlink" title="创建 serviceaccount dashboard"></a>创建 serviceaccount dashboard</h2><h2 id="获取登录K8S时所用token"><a href="#获取登录K8S时所用token" class="headerlink" title="获取登录K8S时所用token"></a>获取登录K8S时所用token</h2><h2 id="验证登录Kubernetes"><a href="#验证登录Kubernetes" class="headerlink" title="验证登录Kubernetes"></a>验证登录Kubernetes</h2>
       
 
       
