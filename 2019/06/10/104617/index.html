@@ -336,32 +336,24 @@
   
 
   
-
-
-
-<section id="comments" class="comments">
-  <style>
-    .comments{margin:30px;padding:10px;background:#fff}
-    @media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
-  </style>
-  <div id="vcomment" class="comment"></div>
-<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
+<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
 <script>
-   var notify = 'false' == true ? true : false;
-   var verify = 'false' == true ? true : false;
-        new Valine({
-            el: '#comment',
-            notify: notify,
-            verify: verify,
-            app_id: "YlJ8MxdoBGMRCz8kiXwTOhXa-gzGzoHsz",
-            app_key: "ajGNzUr7CfvMxzfWUeKgYmYx",
-            placeholder: "Just go go",
-            avatar:"mm"
-        });
+var gitment = new Gitment({
+  id: "http://yoursite.com/2019/06/10/104617/",
+  owner: 'icodesoft',
+  repo: 'icodesoft.github.io',
+  oauth: {
+    client_id: 'cf35c4561a04fe7c2a2e',
+    client_secret: 'b01dc7c47d98fb0335eba71c8360fe9a4d7711d6',
+  },
+})
+gitment.render('gitment-ctn')
 </script>
+  
 
-  </section>
+
 
 
           </div>
