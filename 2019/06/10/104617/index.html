@@ -55,9 +55,9 @@
 		</hgroup>
 
 <!--这一段是不蒜子的访问量统计代码-->
-<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
-<span id="busuanzi_container_site_uv">访客数<span id="busuanzi_value_site_uv"></span>人次</span>
+<span id="busuanzi_container_site_uv">本站访客数<span id="busuanzi_value_site_uv"></span>人次</span>
 
 		
 		<p class="header-subtitle">技术改变生活</p>
@@ -187,6 +187,12 @@
   	<time datetime="2019-06-10T10:43:23.830Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-10</time>
 </a>
         
+        <!-- 添加代码 -->
+      	
+      		<span class="archive-article-date">
+      			阅读量 <span id="busuanzi_value_page_pv"></span>
+      		</span>
+      	
       </header>
     
     <div class="article-entry" itemprop="articleBody">
@@ -225,6 +231,9 @@
                 </span>
               </span>
             </span>
+            <span id="busuanzi_container_page_pv">
+   		本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	    </span>
           </div>
           </a>
         </div>
@@ -336,9 +345,9 @@
   
 
   
-  <div id="gitment-ctn"></div> 
-<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
-<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
+  <div id="gitment-ctn"></div>
+<link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+<script src="https://www.wenjunjiang.win/js/gitment.js"></script>
 <script>
 var gitment = new Gitment({
   id: "http://yoursite.com/2019/06/10/104617/",
@@ -351,9 +360,34 @@ var gitment = new Gitment({
 })
 gitment.render('gitment-ctn')
 </script>
+
   
 
 
+
+<section id="comments" class="comments">
+  <style>
+    .comments{margin:30px;padding:10px;background:#fff}
+    @media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+  </style>
+  <div id="vcomment" class="comment"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+        new Valine({
+            el: '#comment',
+            notify: notify,
+            verify: verify,
+            app_id: "YlJ8MxdoBGMRCz8kiXwTOhXa-gzGzoHsz",
+            app_key: "ajGNzUr7CfvMxzfWUeKgYmYx",
+            placeholder: "Just go go",
+            avatar:"mm"
+        });
+</script>
+
+  </section>
 
 
           </div>
