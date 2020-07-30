@@ -159,6 +159,852 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-java-small-event" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/30/202007/">Java碎碎事</a>
+    </h1>
+  
+
+        
+        <a href="/2020/07/30/202007/" class="archive-article-date">
+  	<time datetime="2020-07-30T07:15:53.540Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-30</time>
+</a>
+        
+        <!-- 添加代码 -->
+      	
+      </header>
+    
+    <!-- 目录内容 -->
+    		
+    <!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="转义URL中字符"><a href="#转义URL中字符" class="headerlink" title="转义URL中字符"></a>转义URL中字符</h2><ul>
+<li>URLEncoder<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.junit.jupiter.api.Test;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.test.context.SpringBootTest;</span><br><span class="line"><span class="keyword">import</span> java.io.UnsupportedEncodingException;</span><br><span class="line"><span class="keyword">import</span> java.net.URLEncoder;</span><br><span class="line"></span><br><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DemoApplicationTests</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">contextLoads</span><span class="params">()</span> <span class="keyword">throws</span> UnsupportedEncodingException </span>&#123;</span><br><span class="line">	    System.out.println(<span class="string">"*****************Start..."</span>);</span><br><span class="line">        String url = <span class="string">"http://localhost:8080/v1/leaders?name="</span>;</span><br><span class="line">        String queryString = <span class="string">"?name="</span> + URLEncoder.encode(<span class="string">"App &amp; Prouducts"</span>, <span class="string">"UTF-8"</span>).replaceAll(<span class="string">"\\+"</span>, <span class="string">"%20"</span>);</span><br><span class="line">        url += queryString</span><br><span class="line">	    System.out.println(<span class="string">"*****************newStr: "</span> + url);</span><br><span class="line">        System.out.println(<span class="string">"*****************End"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="Google-Cahce"><a href="#Google-Cahce" class="headerlink" title="Google Cahce"></a>Google Cahce</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"><span class="keyword">import</span> com.google.common.cache.Cache;</span><br><span class="line"><span class="keyword">import</span> com.google.common.cache.CacheBuilder;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Cache&lt;Integer, String&gt; feedItemsCache = CacheBuilder.newBuilder().concurrencyLevel(<span class="number">1</span>)</span><br><span class="line">            .maximumSize(<span class="number">10</span>).expireAfterWrite(<span class="number">6</span>, TimeUnit.HOURS).build();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getUserNameById</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">    String userName = feedItemsCache.getIfPresent(id);</span><br><span class="line">    <span class="keyword">if</span>(userName != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> userName;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> ....; <span class="comment">//userName from db</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">flushAllCaches</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    feedsCache.invalidateAll();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="正则表达"><a href="#正则表达" class="headerlink" title="正则表达"></a>正则表达</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.regex.Matcher;</span><br><span class="line"><span class="keyword">import</span> java.util.regex.Pattern;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    String blogs = <span class="string">"&lt;img src=\"https://baidu.com/code/files/2020/05/face.jpg\" class=\"attachment-large size-large wp-post-image\" alt=\"\" /&gt;&lt;p&gt;Tutorials Point originated from the idea that there exists a class of readers who respond better to online content and prefer to learn new skills at their own pace from the comforts of their drawing rooms. &lt;/p&gt;&lt;p&gt;The journey commenced with &lt;a rel=\"nofollow\" href=\"https://baidu.com/code/2020/05/28/people/\"&gt;topics ranging from &#123;programming&#125; languages&lt;/a&gt; to web designing to academics &lt;a rel=\"nofollow\" href=\"https://blogs.baidu.com/code\"&gt;and much more.&lt;/a&gt;.&lt;/p&gt;"</span>;</span><br><span class="line">	Pattern p =Pattern.compile(<span class="string">"&lt;p&gt;(?&lt;description&gt;.+?)&lt;/p&gt;"</span>);</span><br><span class="line">    Matcher matcher = p.matcher(blogs);</span><br><span class="line">    <span class="keyword">if</span>(matcher.find()) &#123;</span><br><span class="line">        System.out.println(<span class="string">"********************description: "</span> + matcher.group(<span class="string">"description"</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Pattern p2 =Pattern.compile(<span class="string">"&lt;img\\s+src=\"(?&lt;imgsrc&gt;.+\\.\\w+)\"\\s+"</span>);</span><br><span class="line">    Matcher matcher2 = p2.matcher(blogs);</span><br><span class="line">    <span class="keyword">if</span>(matcher2.find()) &#123;</span><br><span class="line">        System.out.println(matcher2.group(<span class="string">"imgsrc"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="XPath解析RSS"><a href="#XPath解析RSS" class="headerlink" title="XPath解析RSS"></a>XPath解析RSS</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RssItem</span> </span>&#123;</span><br><span class="line">    String title;</span><br><span class="line">    String link;</span><br><span class="line">    Date publishDate;</span><br><span class="line">    String author;</span><br><span class="line">    String description;</span><br><span class="line">    String blogImage;</span><br><span class="line">    <span class="comment">//....get/set</span></span><br><span class="line">｝</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;RssItem&gt; <span class="title">getRssItem</span><span class="params">(String url, <span class="keyword">int</span> maxLimit)</span></span>&#123;</span><br><span class="line">    List&lt;RssItem&gt; rssItems = <span class="keyword">new</span> ArrayList&lt;RssItem&gt;();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">long</span> startTime = System.currentTimeMillis();</span><br><span class="line">        <span class="comment">//&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;rss version="2.0"&gt;</span></span><br><span class="line">        <span class="comment">//&lt;root&gt;</span></span><br><span class="line">        <span class="comment">//    &lt;blog&gt;</span></span><br><span class="line">        <span class="comment">//          &lt;title&gt;xxxxxxxx&lt;/title&gt;</span></span><br><span class="line">        <span class="comment">//          &lt;link&gt;xxxxxxxx&lt;/link&gt;</span></span><br><span class="line">        <span class="comment">//          &lt;pubDate&gt;xxxxxxxx&lt;/pubDate&gt;</span></span><br><span class="line">        <span class="comment">//          &lt;description&gt;&lt;![CDATA[&lt;img src="xxxxxxxx" class="dddd" /&gt;&lt;p&gt;sdf eere. dfdeer, 8989.&lt;/p&gt;</span></span><br><span class="line">        <span class="comment">//                       &lt;p&gt;Our content and resources are freely&lt;a rel=\"nofollow\" href=\"https://blogs.baidu.com/code\"&gt;and             //                         much more.&lt;/a&gt;.&lt;/p&gt;</span></span><br><span class="line">        <span class="comment">//           &lt;/description&gt;</span></span><br><span class="line">        <span class="comment">//    &lt;/blog&gt;</span></span><br><span class="line">        <span class="comment">//    ....</span></span><br><span class="line">        <span class="comment">//    &lt;blog&gt;...&lt;/blog&gt;</span></span><br><span class="line">        <span class="comment">//&lt;root&gt;</span></span><br><span class="line">        <span class="comment">//&lt;/rss&gt;</span></span><br><span class="line">        com.liferay.portal.kernel.xml.Document doc = SAXReaderUtil.readURL(url);</span><br><span class="line">        String xpath = <span class="string">"//root/blog"</span>;</span><br><span class="line">        <span class="comment">// 如果maxLimit大于0，则获取前maxLimit个blog对象</span></span><br><span class="line">        <span class="keyword">if</span>(maxLimit &gt; <span class="number">0</span>) xpath += <span class="string">"[position()&lt;="</span> + maxLimit + <span class="string">"]"</span>;</span><br><span class="line">        List&lt;com.liferay.portal.kernel.xml.Node&gt; items = doc.selectNodes(xpath);</span><br><span class="line">        <span class="keyword">for</span>(com.liferay.portal.kernel.xml.Node item : items) &#123;</span><br><span class="line">            RssItem rssItem = <span class="keyword">new</span> RssItem();</span><br><span class="line">            rssItem.setTitle(item.selectSingleNode(<span class="string">"title"</span>).getText());</span><br><span class="line">            rssItem.setLink(item.selectSingleNode(<span class="string">"link"</span>).getText());</span><br><span class="line">            rssItem.setPublishDate(dateFormat.parse(item.selectSingleNode(<span class="string">"pubDate"</span>).getText()));</span><br><span class="line">            String description = item.selectSingleNode(<span class="string">"description"</span>).getText();</span><br><span class="line">            Pattern p =Pattern.compile(<span class="string">"&lt;p&gt;(?&lt;description&gt;.+?)&lt;/p&gt;"</span>);</span><br><span class="line">            Matcher matcher = p.matcher(description);</span><br><span class="line">            <span class="keyword">if</span>(matcher.find()) &#123;</span><br><span class="line">                rssItem.setDescription(matcher.group(<span class="string">"description"</span>));</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                rssItem.setDescription(description);</span><br><span class="line">            &#125;</span><br><span class="line">            _log.info(<span class="string">"******************description: "</span> + rssItem.getDescription());</span><br><span class="line">            Pattern p2 =Pattern.compile(<span class="string">"&lt;img\\s+src=\"(?&lt;blogImage&gt;.+\\.\\w+)\"\\s+"</span>);</span><br><span class="line">            Matcher matcher2 = p2.matcher(description);</span><br><span class="line">            <span class="keyword">if</span> (matcher2.find()) &#123;</span><br><span class="line">                rssItem.setBlogImage(matcher2.group(<span class="string">"blogImage"</span>));</span><br><span class="line">            &#125;</span><br><span class="line">            _log.info(<span class="string">"******************thumbnailImage: "</span> + rssItem.getBlogImage());</span><br><span class="line">            rssItems.add(rssItem);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">long</span> elapsedTime = System.currentTimeMillis() - startTime;</span><br><span class="line">        _log.info(String.format(<span class="string">"Loaded RSS feeds %s, elapsed time: %s ms"</span>, url, elapsedTime));</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        _log.error(<span class="string">"Loaded RSS failed from "</span> + url);</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> rssItems;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/JAVA//" class="article-tag-list-link color5">JAVA</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/JAVA/Java碎碎事//" class="article-tag-list-link color3">Java碎碎事</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/07/30/202007/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/30/104617/">Hello World</a>
+    </h1>
+  
+
+        
+        <a href="/2020/07/30/104617/" class="archive-article-date">
+  	<time datetime="2020-07-30T07:15:53.229Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-30</time>
+</a>
+        
+        <!-- 添加代码 -->
+      	
+      </header>
+    
+    <!-- 目录内容 -->
+    		
+    <!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+<p>cnpm - 解决 “ cnpm : 无法加载文件 C:\Users\93457\AppData\Roaming\npm\cnpm.ps1，因为在此系统上禁止运行脚本。有关详细信息 。。。 “</p>
+<ul>
+<li>1.在win10 系统中搜索框 输入 Windos PowerShell<br>选择 管理员身份运行</li>
+<li>打开了powershell命令行之后,输入</li>
+</ul>
+<p>set-ExecutionPolicy RemoteSigned</p>
+<p>然后更改权限为A</p>
+<p>最后通过 get-ExecutionPolicy 查看当前的状态<br> 完成。</p>
+<h3 id="Hexo-每次写好后deploy博客"><a href="#Hexo-每次写好后deploy博客" class="headerlink" title="Hexo 每次写好后deploy博客"></a>Hexo 每次写好后deploy博客</h3><p> <a href="https://porter.gitbook.io/deep-learning-series/fu-lu/git-xiang-guan-pei-zhi/hexo-mei-ci-xie-hao-hou-deploy-bo-ke" target="_blank" rel="noopener">https://porter.gitbook.io/deep-learning-series/fu-lu/git-xiang-guan-pei-zhi/hexo-mei-ci-xie-hao-hou-deploy-bo-ke</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cluster//" class="article-tag-list-link color3">Cluster</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cluster/K9S//" class="article-tag-list-link color4">K9S</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/07/30/104617/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-Embed-Angular-component" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/30/20190930/">将Angular项目嵌入到非ng的WEB程序中</a>
+    </h1>
+  
+
+        
+        <a href="/2019/09/30/20190930/" class="archive-article-date">
+  	<time datetime="2019-09-30T08:57:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-30</time>
+</a>
+        
+        <!-- 添加代码 -->
+      	
+      </header>
+    
+    <!-- 目录内容 -->
+    		
+    <!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>总体思路：</p>
+<ul>
+<li><p>Angular应用程序以模块与模块依赖搭建，页面的跳转通过路由来实现，这样做的好处是可以通过环境变量来控制要嵌入哪个模块</p>
+</li>
+<li><p>在非ng的WEB程序中嵌入时采用ifame来加载<br><br>优点：<br><br>  a) 避免两个应用程序之间样式冲突问题<br><br>  b) 避免跨域等问题<br><br>缺点：<br><br>  a) Angular应用嵌入后，页面跳转时浏览器的URL不变<br><br>  b) 怎么传值, 比如登录的用户信息怎么传入ng应用<br><br>  c) 怎么获取载入页面的高度</p>
+        
+          <a class="article-more-a" href="/2019/09/30/20190930/#more">more >></a>
+        
+      
+
+      
+    </li></ul></div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Embed Angular component/app into web</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/09/30/20190930/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-JQuery-a-tag-click" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/04/190904161602/">JQuery实现A标签的click事件，并不刷新页面</a>
+    </h1>
+  
+
+        
+        <a href="/2019/09/04/190904161602/" class="archive-article-date">
+  	<time datetime="2019-09-04T08:16:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-04</time>
+</a>
+        
+        <!-- 添加代码 -->
+      	
+      </header>
+    
+    <!-- 目录内容 -->
+    		
+    <!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="实现思路："><a href="#实现思路：" class="headerlink" title="实现思路："></a>实现思路：</h3><p>向A标签绑定click事件，并在事件结束时返回false,<br>顺手用JQuery实现了下定位锚点功能<br>如下代码所示：<br>HTML:</p>
+<pre><code>&lt;div id=&quot;doc&quot;&gt;
+    &lt;div class=&quot;content&quot;&gt;
+        &lt;a href=&quot;/xxx/index.html#adbc&quot;&gt;&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre><p>JS:</p>
+<pre><code>$(&apos;#doc .content a&apos;).on(&apos;click&apos;, function(){
+    var documentUrl = $(this).attr(&apos;href&apos;);
+    loadContent(documentUrl)
+    return false;
+});
+
+var loadContent = function(url) {
+    $.ajax({
+        type: &apos;POST&apos;,
+        url: url,
+        data: {
+            id: 111,
+            name: &apos;gege&apos;
+        },
+        success: function (data) {
+            var scrollTarget = $(window.location.hash);
+            $(&apos;html, body&apos;).animate({
+                scrollTop: scrollTarget.offset().top
+            }, 1000);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+
+        }
+    });
+};</code></pre>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/JQuery//" class="article-tag-list-link color2">JQuery</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/JQuery/A-tag//" class="article-tag-list-link color1">A tag</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/09/04/190904161602/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-K8S-Install-Ubuntu-18" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/10/192650/">Kubernetes系列~Install Ubuntu 18</a>
+    </h1>
+  
+
+        
+        <a href="/2019/07/10/192650/" class="archive-article-date">
+  	<time datetime="2019-07-10T11:26:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-10</time>
+</a>
+        
+        <!-- 添加代码 -->
+      	
+      </header>
+    
+    <!-- 目录内容 -->
+    		
+    <!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Install Ubuntu 18 (ubuntu-18.04.2-live-server-amd64.iso)<br><img src="/img/K8S-Install-Ubuntu-18/K8S-Install-Ubuntu-18_20190710192755.png" alt></p>
+        
+          <a class="article-more-a" href="/2019/07/10/192650/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cluster//" class="article-tag-list-link color3">Cluster</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cluster/K8S//" class="article-tag-list-link color4">K8S</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/07/10/192650/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-Create-a-VM" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/10/144805/">Kubernetes系列~创建VM在Win10系统</a>
+    </h1>
+  
+
+        
+        <a href="/2019/07/10/144805/" class="archive-article-date">
+  	<time datetime="2019-07-10T06:48:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-10</time>
+</a>
+        
+        <!-- 添加代码 -->
+      	
+      </header>
+    
+    <!-- 目录内容 -->
+    		
+    <!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>想玩K8S就要有环境可玩，今天我们就一起来创建几台虚拟机(VM)<br>三台master和三台slave<br>创建步骤如下：<br><img src="/img/Create-a-VM/2019-07-10-19-14-29.png" alt="2019-07-10-19-14-29"></p>
+<p><img src="/img/Create-a-VM/Create-a-VM_20190710192258.png" alt></p>
+<p><img src="/img/Create-a-VM/Create-a-VM_20190710192310.png" alt></p>
+        
+          <a class="article-more-a" href="/2019/07/10/144805/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cluster//" class="article-tag-list-link color3">Cluster</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cluster/K8S//" class="article-tag-list-link color4">K8S</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/07/10/144805/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-Beyond-Compare" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/08/180613/">Beyond Compare 4.x永久使用方法</a>
+    </h1>
+  
+
+        
+        <a href="/2019/07/08/180613/" class="archive-article-date">
+  	<time datetime="2019-07-08T10:06:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-08</time>
+</a>
+        
+        <!-- 添加代码 -->
+      	
+      </header>
+    
+    <!-- 目录内容 -->
+    		
+    <!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>删除以下目录中的所有文件即可。</p>
+<pre><code>C:\Users\your user name\AppData\Roaming\Scooter Software\Beyond Compare 4</code></pre><p>ps: <span style="color:red">此方法实际为重复利用试用期达到永久可用，算是软件的BUG吧，呵呵</span></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/07/08/180613/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-git-add-fatal" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/01/104056/">git add .报错问题</a>
+    </h1>
+  
+
+        
+        <a href="/2019/07/01/104056/" class="archive-article-date">
+  	<time datetime="2019-07-01T02:40:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-01</time>
+</a>
+        
+        <!-- 添加代码 -->
+      	
+      </header>
+    
+    <!-- 目录内容 -->
+    		
+    <!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>当前处在：/d/projects/Blog/themes目录下<br>因为yilia是从另一个第三方的仓库克隆的，在执行git add的时候”fatal: in unpopulated submodule yilia” 错误</p>
+<h3 id="执行git-add-时出错，如下："><a href="#执行git-add-时出错，如下：" class="headerlink" title="执行git add .时出错，如下："></a>执行git add .时出错，如下：</h3><pre><code>gary@DESKTOP-89UIIGH MINGW64 /d/projects/Blog/themes/yilia (master)
+$ git add .
+fatal: in unpopulated submodule &apos;themes/yilia&apos;</code></pre><h3 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h3><pre><code>gary@DESKTOP-89UIIGH MINGW64 /d/projects/Blog/themes (master)
+$ git rm -rf --cached yilia
+rm &apos;themes/yilia&apos;
+gary@DESKTOP-89UIIGH MINGW64 /d/projects/Blog/themes (master)
+$ git add yilia/*
+gary@DESKTOP-89UIIGH MINGW64 /d/projects/Blog/themes (master)
+$ git add .
+gary@DESKTOP-89UIIGH MINGW64 /d/projects/Blog/themes (master)
+$ git commit -m &quot;add themes yilia source code&quot;
+gary@DESKTOP-89UIIGH MINGW64 /d/projects/Blog/themes (master)
+$ git push</code></pre>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/07/01/104056/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-linux-no-space" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/24/144632/">linux磁盘空间不足原因(错误信息：no space left on device)</a>
+    </h1>
+  
+
+        
+        <a href="/2019/06/24/144632/" class="archive-article-date">
+  	<time datetime="2019-06-24T06:46:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-24</time>
+</a>
+        
+        <!-- 添加代码 -->
+      	
+      </header>
+    
+    <!-- 目录内容 -->
+    		
+    <!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="发现问题"><a href="#发现问题" class="headerlink" title="发现问题"></a>发现问题</h2><h3 id="在服务器上执行sudo-service-restart时执行以下错误"><a href="#在服务器上执行sudo-service-restart时执行以下错误" class="headerlink" title="在服务器上执行sudo service  restart时执行以下错误"></a>在服务器上执行sudo service <service-name> restart时执行以下错误</service-name></h3><p>…</p>
+<p>line 400: echo: write error: No space left on device<br>Status:                UNKNOWN due to Tomcat 7-based instance being started as a foreground process</p>
+<h2 id="排查原因"><a href="#排查原因" class="headerlink" title="排查原因"></a>排查原因</h2><h3 id="查看磁盘空间使用情况"><a href="#查看磁盘空间使用情况" class="headerlink" title="查看磁盘空间使用情况"></a>查看磁盘空间使用情况</h3><p>使用df -h命令查看，发现/根目录的剩余空间为0</p>
+<pre><code>root@aa:~$ df -h
+Filesystem               Size  Used Avail Use% Mounted on
+/dev/mapper/centos-root   39G   39G   20K 100% /
+devtmpfs                 3.9G     0  3.9G   0% /dev
+tmpfs                    3.9G     0  3.9G   0% /dev/shm
+tmpfs                    3.9G  449M  3.4G  12% /run
+tmpfs                    3.9G     0  3.9G   0% /sys/fs/cgroup
+/dev/sda1               1014M  143M  872M  15% /boot
+/dev/mapper/centos-home   19G  5.8G   13G  31% /home
+tmpfs                    783M     0  783M   0% /run/user/1000</code></pre><h3 id="使用du-h-x-–max-depth-1-查看哪个目录占用过高"><a href="#使用du-h-x-–max-depth-1-查看哪个目录占用过高" class="headerlink" title="使用du -h -x –max-depth=1  查看哪个目录占用过高"></a>使用du -h -x –max-depth=1  查看哪个目录占用过高</h3><p>我们从根目录执行以上命令发现/opt目录占用最大22G，<br>所以我们再向下找出最大是哪个子目录</p>
+<pre><code>root@aa:/opt$ du -h -x --max-depth=1
+940M    ./servers
+21G     ./apache-tomcat-solr
+526M    ./solrdata
+22G     .</code></pre><p>发现是apache-tomcat-solr占用过大，一直找下去<br>…<br>发现是其logs文件夹太大导致</p>
+<pre><code>root@aa:/opt/apache-tomcat-solr$ du -h -x --max-depth=1
+68M     ./webapps
+760K    ./bin
+204K    ./conf
+0       ./temp
+7.3M    ./lib
+21G     ./logs
+192K    ./work
+21G     .</code></pre><p>问题找到了，直接清理已久远不再用的日志文件释放一些空间即可。</p>
+        
+          <a class="article-more-a" href="/2019/06/24/144632/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Linux</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">No Space</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/06/24/144632/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
     <article id="post-java-springboot-http" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -234,111 +1080,9 @@
 
 
   
-    <article id="post-java-jackson-Serializable" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/20/101346/">java jackson Serializable</a>
-    </h1>
-  
-
-        
-        <a href="/2019/06/20/101346/" class="archive-article-date">
-  	<time datetime="2019-06-20T02:13:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-20</time>
-</a>
-        
-        <!-- 添加代码 -->
-      	
-      </header>
-    
-    <!-- 目录内容 -->
-    		
-    <!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="json-–-gt-java类"><a href="#json-–-gt-java类" class="headerlink" title="json –&gt; java类"></a>json –&gt; java类</h2><h3 id="ObjectMapper"><a href="#ObjectMapper" class="headerlink" title="ObjectMapper"></a>ObjectMapper</h3><pre><code>ResponseEntity&lt;String&gt; responseEntity = this.restTemplate.exchange(uri, HttpMethod.GET, null, String.class);
-    ObjectMapper objectMapper = new ObjectMapper();
-    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    if (responseEntity.getStatusCode() == HttpStatus.OK) {
-        String result = responseEntity.getBody();
-        try {
-            apis = objectMapper.readValue(result, new TypeReference&lt;List&lt;Api&gt;&gt;(){});
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println(responseEntity.getBody());
-        return apis;
-    }</code></pre><h3 id="ParameterizedTypeReference"><a href="#ParameterizedTypeReference" class="headerlink" title="ParameterizedTypeReference"></a>ParameterizedTypeReference</h3><pre><code>ResponseEntity&lt;List&lt;Api&gt;&gt; responseEntity = this.restTemplate.exchange(uri, HttpMethod.GET, null, String.class);
-    ResponseEntity&lt;List&lt;Api&gt;&gt; responseEntity = this.restTemplate.exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference&lt;List&lt;Api&gt;&gt;() {});
-    if (responseEntity.getStatusCode() == HttpStatus.OK) {
-        String result = responseEntity.getBody();
-        apis = responseEntity.getBody();
-
-        return apis;
-    }</code></pre>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Jackson//" class="article-tag-list-link color3">Jackson</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Jackson/Serializable//" class="article-tag-list-link color3">Serializable</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/06/20/101346/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
   
 
@@ -438,11 +1182,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Embed Angular component/app into web</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
+                <a href="javascript:void(0)" class="js-tag color2">Spring Boot</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">DB</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
               </li>
              
               <li class="article-tag-list-item">
